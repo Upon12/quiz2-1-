@@ -1,0 +1,59 @@
+{% extends "main.html" %}
+
+{% block app_content %}
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;margin-top: 50px;">
+    {% if data %}
+        <div id="bar" style="height: 500px; width: 50%"></div>
+        <div id="data" container="{{data}}" style="display:none"></div>
+        <div id="data1" container1="{{data1}}" style="display:none"></div>
+    {% endif %}
+</div>
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('bar'));
+	var data = document.getElementById('data').getAttribute('container');//绑定以获取data值
+    var data1 = document.getElementById('data1').getAttribute('container1');
+	dataJson=JSON.parse(data);
+    dataJson1=JSON.parse(data1);
+    // setting chart
+    var option = {
+        title: {
+            text: 'The scatter chart of p',
+            textStyle: {fontSize:25},
+            left:"center"
+        },
+        tooltip: {},
+        xAxis: {
+            name: 'x',
+            nameTextStyle:{fontWeight:"bold",fontSize:12},
+            axisLine:{show:true,symbol:['none', 'arrow'],symbolOffset:[0,12]},
+            axisTick:{inside:true,}
+        },
+        yAxis: {
+            name:'y',
+            nameTextStyle:{fontWeight:"bold",fontSize:12},
+            axisLine:{show:true,symbol:['none', 'arrow'],symbolOffset:[0,12]}
+        },
+        series: [{
+            type: 'scatter',
+            data: dataJson.count,
+            itemStyle:{
+                color:function(e){
+                    return "red"
+                }
+            }
+        },
+        {
+            type: 'scatter',
+            data: dataJson1.count,
+            itemStyle:{
+                color:function(e){
+                    return "green"
+                }
+            }
+        }]
+    };
+
+    // show chart
+    myChart.setOption(option);
+</script>
+{% endblock %}

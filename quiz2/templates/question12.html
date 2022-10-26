@@ -1,0 +1,48 @@
+{% extends "main.html" %}
+
+{% block app_content %}
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;margin-top: 50px;">
+    {% if not data %}
+    <form action="" method="post" class="form" role="form"
+        style="display: flex; flex-direction:row; width: 60%; margin-bottom: 40px;">
+        <input class="form-control" id="Low2" name="Low" placeholder="Input the start store" type="number"
+            value="" style="margin-right: 20px;">
+        <input class="form-control" id="High" name="High" placeholder="Input the end store" type="number"
+            value="" style="margin-right: 20px;">
+        <input class="btn btn-primary" id="submit" name="submit" type="submit" value="Search">
+    </form>
+    {% endif %}
+    {% if data %}
+        <div id="bar" style="height: 500px; width: 80%"></div>
+        <div id="data" container="{{data}}" style="display:none"></div>
+    {% endif %}
+    {% if information %}
+        <span>{{information}}</span>
+    {% endif %}
+</div>
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('bar'));
+	var data = document.getElementById('data').getAttribute('container');//绑定以获取data值
+	dataJson=JSON.parse(data);
+    // setting chart
+    var option = {
+        title: {
+            text: 'The total amount of food for each store',
+            textStyle: {fontSize:25},
+            left:"center"
+        },
+        tooltip: {},
+        series: [{
+            type: 'pie',
+            data: [
+                {value:dataJson.count[0],name:"store"+dataJson.name[0]},
+                {value:dataJson.count[1],name:"store"+dataJson.name[1]},
+                {value:dataJson.count[2],name:"store"+dataJson.name[2]},
+            ]
+        }]
+    };
+
+    // show chart
+    myChart.setOption(option);
+</script>
+{% endblock %}
